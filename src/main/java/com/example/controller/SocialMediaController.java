@@ -54,34 +54,37 @@ public class SocialMediaController {
         return null;
     }
 
-    /*4: Our API should be able to retrieve all messages. */
+    /*4: Our API should be able to retrieve all messages. */ //COMPLETED
     @GetMapping("/messages")
     public ResponseEntity<List<Message>> getAllMessages(){
-        return null;
+        return ResponseEntity.status(200).body(messageService.getAllMessages());
     }
 
-    /*5: Our API should be able to retrieve a message by its ID. */
+    /*5: Our API should be able to retrieve a message by its ID. */ //COMPLETED
     @GetMapping("/messages/{messageId}")
     public ResponseEntity<Message> getMessageById(@PathVariable Integer messageId){
-        return null;
+        return ResponseEntity.status(200).body(messageService.getMessageById(messageId));
     }
     
-    /*6: Our API should be able to delete a message identified by a message ID. */
+    /*6: Our API should be able to delete a message identified by a message ID. */ //COMPLETED
     @DeleteMapping("/messages/{messageId}")
     public ResponseEntity<Integer> deleteMessageById(@PathVariable Integer messageId){
-        return null;
+        return ResponseEntity.status(200).body(messageService.deleteMessageById(messageId));
     }
 
-    /*7: Our API should be able to update a message text identified by a message ID. */
+    /*7: Our API should be able to update a message text identified by a message ID. */ //COMPLETED
     @PatchMapping("/messages/{messageId}")
-    public ResponseEntity<Integer> updateMessageById(@PathVariable Integer messageId){
-        return null;
+    public ResponseEntity<Integer> updateMessageById(@RequestBody Message updatedMessage, @PathVariable Integer messageId){
+        int response = messageService.updateMessageById(messageId, updatedMessage);
+        if (response == 0){return ResponseEntity.status(400).body(null);}
+        return ResponseEntity.status(200).body(response);
+        
     }
 
     /*8: Our API should be able to retrieve all messages written by a particular user. */
     @GetMapping("/accounts/{accountId}/messages")
     public ResponseEntity<List<Message>> getAllMessagesByAccount(@PathVariable Integer accountId){
-        return null;
+        return ResponseEntity.status(200).body(messageService.getAllByUserId(accountId));
     }
 
 }
