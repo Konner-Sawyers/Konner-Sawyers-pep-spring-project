@@ -8,15 +8,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
+import com.example.entity.Account;
 import com.example.repository.MessageRepository;
+import com.example.service.AccountService;
 
 @Service
 public class MessageService {
     private final MessageRepository messageRepository;
+    private AccountService accountService;
 
     @Autowired
-    public MessageService(MessageRepository messageRepository){
+    public MessageService(MessageRepository messageRepository, AccountService accountService){
         this.messageRepository = messageRepository;
+        this.accountService = accountService;
+    }
+
+    public Message createMessage(Message message){
+        if(accountService.doesAccountExistById(message.getPostedBy()) == false){
+            return null;
+        }
+        if(message.getMessageText().length() < 1 || message.getMessageText().length() > 255){
+            return null;
+        }
+        Message nMessage = new Message(message.getPostedBy(), message.getMessageText(), message.getTimePostedEpoch());
+        return messageRepository.save(nMessage);
     }
 
     public List<Message> getAllMessages(){

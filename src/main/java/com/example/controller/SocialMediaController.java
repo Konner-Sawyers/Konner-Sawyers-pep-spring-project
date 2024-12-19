@@ -36,22 +36,38 @@ public class SocialMediaController {
         this.messageService = messageService;
     }
 
-    /*1: Our API should be able to process new User registrations. */
+    /*1: Our API should be able to process new User registrations. */ //COMPLETED
     @PostMapping("/register")
     public ResponseEntity<Account> registerAccount(@RequestBody Account account){
-        return null;
+        Account rAccount = accountService.createAccount(account);
+        if(rAccount == null){
+            return ResponseEntity.status(400).body(null);
+        }
+        if(rAccount.getAccountId() == null){
+            return ResponseEntity.status(409).body(null);
+        }
+        return ResponseEntity.status(200).body(rAccount);
     }
 
-    /*2: Our API should be able to process User logins. */
+    /*2: Our API should be able to process User logins. */ //COMPLETED
     @PostMapping("login")
     public ResponseEntity<Account> loginAccount(@RequestBody Account account){
-        return null;
+        Account rAccount = accountService.loginAccount(account);
+        if (rAccount != null){
+            return ResponseEntity.status(200).body(rAccount);
+        }
+
+        return ResponseEntity.status(401).body(null);
     }
 
     /*3: Our API should be able to process the creation of new messages. */
     @PostMapping("/messages")
     public ResponseEntity<Message> insertMessage(@RequestBody Message message){
-        return null;
+        Message rMessage = messageService.createMessage(message);
+        if(rMessage == null){
+            return ResponseEntity.status(400).body(null);
+        }
+        return ResponseEntity.status(200).body(rMessage);
     }
 
     /*4: Our API should be able to retrieve all messages. */ //COMPLETED
